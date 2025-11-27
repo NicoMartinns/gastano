@@ -1,0 +1,53 @@
+# --- Ruby & Rails ---
+*.rbc
+/.bundle
+/vendor/bundle
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-*
+/db/schema.rb
+/db/structure.sql
+
+# Rails credentials (NUNCA subir)
+config/master.key
+config/credentials.yml.enc
+
+# Node / Yarn (caso use futuramente)
+node_modules/
+yarn-error.log
+
+# Assets gerados
+/public/assets
+/public/packs
+/public/packs-test
+/public/js
+/public/css
+
+# --- Docker ---
+infra/docker/.env
+postgres_data/
+*.pid
+*.log
+
+# --- VSCode ---
+.vscode/
+*.code-workspace
+
+# --- Sistema operacional ---
+.DS_Store
+Thumbs.db
+
+# --- Terraform ---
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# --- Editor backup ---
+*~
+*.swp
+*.swo

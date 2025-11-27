@@ -1,0 +1,111 @@
+<h1 class="text-2xl font-bold mb-6">Dashboard</h1>
+
+<h2 class="text-xl font-bold mb-4">Gastos por Dia</h2>
+<div class="bg-white p-4 rounded shadow mb-8">
+  <canvas id="grafico-gastos" height="60"></canvas>
+</div>
+
+<script type="module">
+  document.addEventListener("turbo:load", async () => {
+    const Chart = (await import("chart.js/auto")).default;
+
+    const ctx = document.getElementById("grafico-gastos");
+    if (!ctx) return;
+
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: <%= raw @labels_gastos.to_json %>,
+        datasets: [{
+          label: "Gastos",
+          data: <%= raw @values_gastos.to_json %>,
+          borderColor: "rgb(239, 68, 68)",
+          backgroundColor: "rgba(239, 68, 68, .2)",
+          tension: 0.3
+        }]
+      }
+    });
+  });
+</script>
+
+<!-- Tabela de Resumo -->
+<table class="min-w-full bg-white shadow rounded mb-8">
+  <thead>
+    <tr class="bg-gray-200 text-left">
+      <th class="px-4 py-2">Descrição</th>
+      <th class="px-4 py-2">Valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="border-b">
+      <td class="px-4 py-2 font-medium">Total de Receitas</td>
+      <td class="px-4 py-2 text-green-700 font-semibold">
+        <%= number_to_currency(@total_receitas) %>
+      </td>
+    </tr>
+
+    <tr class="border-b">
+      <td class="px-4 py-2 font-medium">Total de Gastos</td>
+      <td class="px-4 py-2 text-red-700 font-semibold">
+        <%= number_to_currency(@total_gastos) %>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="px-4 py-2 font-medium">Saldo</td>
+      <td class="px-4 py-2 <%= @saldo >= 0 ? "text-green-700" : "text-red-700" %> font-semibold">
+        <%= number_to_currency(@saldo) %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 class="text-xl font-bold mb-3">Últimas Receitas</h2>
+
+<table class="min-w-full bg-white shadow rounded mb-8">
+  <thead>
+    <tr class="bg-gray-200 text-left">
+      <th class="px-4 py-2">Data</th>
+      <th class="px-4 py-2">Título</th>
+      <th class="px-4 py-2">Categoria</th>
+      <th class="px-4 py-2">Valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ultimas_receitas.each do |r| %>
+      <tr class="border-b">
+        <td class="px-4 py-2"><%= r.data %></td>
+        <td class="px-4 py-2"><%= r.titulo %></td>
+        <td class="px-4 py-2"><%= r.categoria %></td>
+        <td class="px-4 py-2 text-green-700 font-semibold">
+          <%= number_to_currency(r.valor) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2 class="text-xl font-bold mb-3">Últimos Gastos</h2>
+
+<table class="min-w-full bg-white shadow rounded mb-8">
+  <thead>
+    <tr class="bg-gray-200 text-left">
+      <th class="px-4 py-2">Data</th>
+      <th class="px-4 py-2">Título</th>
+      <th class="px-4 py-2">Categoria</th>
+      <th class="px-4 py-2">Valor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ultimos_gastos.each do |g| %>
+      <tr class="border-b">
+        <td class="px-4 py-2"><%= g.data %></td>
+        <td class="px-4 py-2"><%= g.titulo %></td>
+        <td class="px-4 py-2"><%= g.categoria %></td>
+        <td class="px-4 py-2 text-red-700 font-semibold">
+          <%= number_to_currency(g.valor) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
